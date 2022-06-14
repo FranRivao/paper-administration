@@ -1,0 +1,42 @@
+<div class="col-12">
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+            <h6 class="m-0"><b>Tabla stock de papel</b></h6>
+            <div class="d-flex justify-content-between">
+                <form action="/deleteItem" method="post" class="me-3 d-flex justify-content-between">
+                    <input type="number" min="1" placeholder="Id del elemento:" class="form-control form-control-sm" name="id">
+                    <button class="btn btn-sm btn-danger ms-2">Eliminar</button>
+                </form>
+                <a href="/stats" class="btn btn-sm btn-primary">Estadisticas</a>
+            </div>
+        </div>
+        <div class="card-body">
+            {{> index/table}}
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <h6>Modificar elemento</h3>
+        </div>
+        <div class="card-body">
+            {{> index/modifyItem}}
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <h6>Modificar campos</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    FORMULARIO PARA MODIFICAR TIPO
+                </div>
+                <div class="col-md-6 col-12">
+                    FORMULARIO PARA MODIFICAR MODO
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="static/js/index.js"></script>

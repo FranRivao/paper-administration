@@ -1,0 +1,28 @@
+<div class="row d-flex justify-content-center">
+    <div class="col-md-7 d-flex justify-content-between">
+        <div class="card col-12">
+            <div class="card-header d-flex justify-content-between">
+                    <h6 class="m-0"><b>Estadisticas del stock</b></h6>
+                    <a href="/" class="btn btn-sm btn-primary">Volver</a>
+                </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <div class="ms-5">
+                            <p><b>Estadisticas modos de entrega:</b></p>
+                            <p>Pedidos entregados en paquete: {{info.modes.package}}</p>
+                            <p>Pedidos entregados en palet: {{info.modes.pallet}}</p>
+                            <p>Pedidos entregados en palet abierto: {{info.modes.openedPallet}}</p>
+                        </div>
+                        <div class="me-5">
+                            <p><b>Estadisticas costes/venta:</b></p>
+                            <p>Costos totales: € {{info.purchasePrice}}</p>
+                            <p>Ventas totales: € {{info.sellPrice}}</p>
+                            <p>Beneficio: € {{info.benefit}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

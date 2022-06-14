@@ -1,0 +1,28 @@
+<table class="table table-striped table-hover">
+    <thead>
+        {{> index/tableHead}}
+    </thead>
+    <tbody>
+        {{#each items}}
+            <tr>
+                <td><button class="button-none idBtn" id="idBtn-{{id}}">{{id}}</button></td>
+                <td>{{type}}</td>
+                <td>{{sideA}} cm</td>
+                <td>{{sideB}} cm</td>
+                <td>{{grammage}}</td>
+                <td>{{sheets}}</td>
+                <td>{{mode}}</td>
+                <td>{{origin}}</td>
+                <td>{{weight}}</td>
+                <td>€ {{kgPurchasePrice}}</td>
+                <td>€ {{kgSellPrice}}</td>
+                <td>€ {{purchasePrice}}</td>
+                <td>€ {{sellPrice}}</td>
+                <td><textarea class="form-control" disabled>{{observation}}</textarea></td>
+            </tr>
+        {{/each}}
+        <tr>
+            {{> index/addItem}}
+        </tr>
+    </tbody>
+</table>

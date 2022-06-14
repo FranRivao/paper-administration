@@ -1,7 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
-const flash = require('flash');
+const flash = require('connect-flash');
 const morgan = require('morgan');
 const session = require('express-session');
 const mysqlStore = require('express-mysql-session');
@@ -34,8 +34,8 @@ app.use(session({
     saveUninitialized: false,
     store: new mysqlStore(database)
 }));
-app.use(morgan('dev'));
 app.use(flash());
+app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(passport.initialize());
@@ -43,8 +43,8 @@ app.use(passport.session());
  
 // Global Variables
 app.use((req, res, next) => {
-    // app.locals.success = req.flash('success');
-    // app.locals.error = req.flash('error');
+    app.locals.success = req.flash('success');
+    app.locals.error = req.flash('error');
     app.locals.user = req.user;
     app.locals.appName = app.get('appName');
     // if(req.user){
@@ -56,11 +56,12 @@ app.use((req, res, next) => {
 
 // Routes
 app.use(require('./routes'));
+app.use(require('./routes/item'));
 app.use(require('./routes/authentication'));
 
-app.use(express.static('public'));
+app.use('/static', express.static(__dirname + '/public'));
 
 // Start server
 app.listen(app.get('port'), () => {
     console.log('Server on port', app.get('port'));
-})
+});

@@ -1,0 +1,79 @@
+<form action="/addItem" method="POST">
+    <td></td>
+    <td>
+        <div class="form-group">
+            <select name="type" id="type" class="form-select form-select-sm">
+                {{#each types}}
+                    <option value="{{id}}">{{type}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input autocomplete="off" type="text" min="0" id="sideA" name="sideA" class="form-control form-control-sm p-1">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input autocomplete="off" type="text" min="0" id="sideB" name="sideB" class="form-control form-control-sm p-1">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input autocomplete="off" type="text" min="0" id="grammage" name="grammage" class="form-control form-control-sm p-1">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input autocomplete="off" type="text" min="0" id="sheets" name="sheets" class="form-control form-control-sm p-1">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <select name="mode" id="mode" class="form-select form-select-sm">
+                {{#each modes}}
+                    <option value="{{id}}">{{mode}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input autocomplete="off" type="text" id="origin" name="origin" class="form-control form-control-sm p-1">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input autocomplete="off" type="text" min="0" id="weight" name="weight" class="form-control form-control-sm p-1">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input autocomplete="off" type="text" min="0" id="kgPurchasePrice" name="kgPurchasePrice" class="form-control form-control-sm p-1">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input autocomplete="off" type="text" min="0" id="kgSellPrice" name="kgSellPrice" class="form-control form-control-sm p-1">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input autocomplete="off" type="text" min="0" id="purchasePrice" name="purchasePrice" class="form-control form-control-sm p-1">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <input autocomplete="off" type="text" min="0" id="sellPrice" name="sellPrice" class="form-control form-control-sm p-1">
+        </div>
+    </td>
+    <td>
+        <div class="form-group">
+            <textarea name="observation" class="form-control form-control-sm p-1 mb-2"></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary btn-sm col-12">Agregar</button>
+        </div>
+    </td>
+</form>
