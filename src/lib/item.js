@@ -62,6 +62,16 @@ helpers.getItemsForStats = async () => {
     }
 };
 
+helpers.getItemByProp = async (prop, search) => {
+    let data = {};
+    data[prop] = search;
+    try {
+        return await pool.query('SELECT * FROM items WHERE ?', [data]);
+    } catch (e) {
+        console.log(e);
+    }
+};
+
 helpers.getItemTypes = async () => {
     try {
         return await pool.query('SELECT * FROM types')
@@ -86,9 +96,11 @@ helpers.getItemsObservations = async () => {
     }
 };
 
-helpers.getItemObservation = async (observation) => {
+helpers.getObservationByProp = async (prop, search) => {
+    let data = {};
+    data[prop] = search;
     try {
-        return await pool.query('SELECT * FROM observations WHERE observation = ?', [observation]);
+        return await pool.query('SELECT * FROM observations WHERE ?', [data]);
     } catch (e) {
         console.log(e);
     }
@@ -110,6 +122,23 @@ helpers.addObservation = async (observation, userId) => {
         console.log(e);
     }
 };
+
+
+// Update functions
+helpers.modifyItem = async (id, fieldToModify, modification) => {
+    let data = {};
+    data[fieldToModify] = modification;
+    try {
+        if (fieldToModify == "observation") {
+            const item = await helpers.getItemByProp("id", id);
+            await pool.query('UPDATE observations SET ? WHERE id = ?', [data, item[0].observation]);
+        } else {
+            await pool.query('UPDATE items SET ? WHERE id = ?', [data, id]);
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
 
 // Delete functions
 helpers.deleteItem = async (id) => {

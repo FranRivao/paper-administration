@@ -4,7 +4,7 @@
             <h6 class="m-0"><b>Tabla stock de papel</b></h6>
             <div class="d-flex justify-content-between">
                 <form action="/deleteItem" method="post" class="me-3 d-flex justify-content-between">
-                    <input type="number" min="1" placeholder="Id del elemento:" class="form-control form-control-sm" name="id">
+                    <input type="number" min="{{items.0.id}}" placeholder="Id del elemento:" class="form-control form-control-sm" name="id">
                     <button class="btn btn-sm btn-danger ms-2">Eliminar</button>
                 </form>
                 <a href="/stats" class="btn btn-sm btn-primary">Estadisticas</a>
@@ -14,27 +14,15 @@
             {{> index/table}}
         </div>
     </div>
-    <div class="card mb-3">
-        <div class="card-header">
-            <h6>Modificar elemento</h3>
-        </div>
-        <div class="card-body">
+    <div class="row" id="modify">
+        <div class="col-md-4">
             {{> index/modifyItem}}
         </div>
-    </div>
-    <div class="card mb-3">
-        <div class="card-header">
-            <h6>Modificar campos</h3>
+        <div class="col-md-4">
+            {{> index/modifyType}}
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 col-12">
-                    FORMULARIO PARA MODIFICAR TIPO
-                </div>
-                <div class="col-md-6 col-12">
-                    FORMULARIO PARA MODIFICAR MODO
-                </div>
-            </div>
+        <div class="col-md-4">
+            {{> index/modifyMode}}
         </div>
     </div>
 </div>

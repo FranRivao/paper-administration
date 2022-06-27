@@ -9,61 +9,58 @@ const kgSellPriceInput = $("#kgSellPrice");
 const purchasePriceInput = $("#purchasePrice");
 const sellPriceInput = $("#sellPrice");
 
-
+// #######################
 // Side A input
 sideAInput.focusout(() => {
-    weightInput.val(Math.round(sideAInput.val()*sideBInput.val()*grammageInput.val()/20000/500*sheetsInput.val()));
+    weightInput.val();
 });
 
 // Side B input
 sideBInput.focusout(() => {
-    weightInput.val(Math.round(sideAInput.val()*sideBInput.val()*grammageInput.val()/20000/500*sheetsInput.val()));
+    weightInput.val(calculateWeight(sideAInput, sideBInput, grammageInput, sheetsInput));
 });
 
 // Grammage input
 grammageInput.focusout(() => {
-    weightInput.val(Math.round(sideAInput.val()*sideBInput.val()*grammageInput.val()/20000/500*sheetsInput.val()));
+    weightInput.val(calculateWeight(sideAInput, sideBInput, grammageInput, sheetsInput));
 });
 
 // Sheets input
 sheetsInput.focusout(() => {
-    weightInput.val(Math.round(sideAInput.val()*sideBInput.val()*grammageInput.val()/20000/500*sheetsInput.val()));
+    weightInput.val(calculateWeight(sideAInput, sideBInput, grammageInput, sheetsInput));
 });
 
 // Origin input
 originInput.focusout(() => {
-    console.log(originInput.val() === (""));
-    if (originInput.val() === "") {
-        originInput.val("-")
-    }
+    originInput.val() === "" ? originInput.val("-") : null;
 });
 
 // Weight input
 weightInput.focusout(() => {
-    purchasePriceInput.val("€ " + Math.round(weightInput.val()*kgPurchasePriceInput.val().slice(1)));
+    purchasePriceInput.val("€ " + calculatePurchasePrice(weightInput, kgPurchasePriceInput));
 });
 
 // Kg purchase input
 kgPurchasePriceInput.focusout(() => {
     verifyFirstChar(kgPurchasePriceInput, "€");
 
-    purchasePriceInput.val("€ " + Math.round(weightInput.val()*kgPurchasePriceInput.val().slice(1)));
+    purchasePriceInput.val("€ " + calculatePurchasePrice(weightInput, kgPurchasePriceInput));
 
-    sellPriceInput.val("€ " + Math.round(purchasePriceInput.val().slice(1)/kgPurchasePriceInput.val().slice(1)*kgSellPriceInput.val().slice(1)));
+    sellPriceInput.val("€ " + calculateSellPrice(purchasePriceInput, kgPurchasePriceInput, kgSellPriceInput));
 });
 
 // Kg sell input
 kgSellPriceInput.focusout(() => {
     verifyFirstChar(kgSellPriceInput, "€");
 
-    sellPriceInput.val("€ " + Math.round(purchasePriceInput.val().slice(1)/kgPurchasePriceInput.val().slice(1)*kgSellPriceInput.val().slice(1)));
+    sellPriceInput.val("€ " + calculateSellPrice(purchasePriceInput, kgPurchasePriceInput, kgSellPriceInput));
 });
 
 // Purchase price input
 purchasePriceInput.focusout(() => {
     verifyFirstChar(purchasePriceInput, "€");
 
-    sellPriceInput.val("€ " + Math.round(purchasePriceInput.val().slice(1)/kgPurchasePriceInput.val().slice(1)*kgSellPriceInput.val().slice(1)));
+    sellPriceInput.val("€ " + calculateSellPrice(purchasePriceInput, kgPurchasePriceInput, kgSellPriceInput));
 });
 
 // Sell price input
@@ -78,22 +75,70 @@ function verifyFirstChar(field, char) {
     }
 }
 
+function calculateWeight(sideA, sideB, grammage, sheets) {
+    return Math.round(sideA.val()*sideB.val()*grammage.val()/20000/500*sheets.val());
+}
 
-// Id buttons
-const idInputM = $("#id-M");
-const sideAInputM = $("#sideA-M");
-const sideBInputM = $("#sideB-M");
-const grammageInputM = $("#grammage-M");
-const sheetsInputM = $("#sheets-M");
-const originInputM = $("#origin-M");
-const weightInputM = $("#weight-M");
-const kgPurchasePriceInputM = $("#kgPurchasePrice-M");
-const kgSellPriceInputM = $("#kgSellPrice-M");
-const purchasePriceInputM = $("#purchasePrice-M");
-const sellPriceInputM = $("#sellPrice-M");
-const observationInputM = $("#observation-M");
+function calculatePurchasePrice(weight, kgPurchasePrice) {
+    console.log(kgPurchasePrice.val().slice(1), weight.val());
+    return Math.round(weight.val()*kgPurchasePrice.val().slice(1));
+}
 
+function calculateSellPrice(purchasePrice, kgPurchasePrice, kgSellPrice) {
+    return Math.round(purchasePrice.val().slice(1)/kgPurchasePrice.val().slice(1)*kgSellPrice.val().slice(1));
+}
+
+
+// #######################
+// Id automatic selection
+const idInput = $("#moditem-id");
 
 $(".idBtn").click((e) => {
-    idInputM.html(e.currentTarget.innerHTML);
+    idInput.val(e.currentTarget.innerHTML);
+});
+
+// #######################
+// Modify item select html || select/input hide/show system
+let body = "";
+let amount = 0;
+const select = $("#modselect");
+const tableValues = ["", "type", "sideA", "sideB", "grammage", "sheets", "mode", "origin", "kgPurchasePrice", "kgSellPrice", "observation"];
+const tableCols = ["", "Tipo", "Lado A", "Lado B", "Gramaje", "Hojas", "Modo", "Procedencia/Destino", "CosteKg", "VentaKg", "Observacion"];
+
+tableCols.forEach(o => {
+    body += `<option value="${tableValues[amount]}">${o}</option>`
+    amount++;
+}); select.html(body);
+
+const textarea = $("#modtextarea");
+const typeSelect = $("#modtype");
+const modeSelect = $("#modmode");
+const input = $("#modinput");
+
+textarea.hide();
+typeSelect.hide();
+modeSelect.hide();
+
+select.change(e => {
+    if (e.currentTarget.value == "type") {
+        typeSelect.show();
+        textarea.hide();
+        modeSelect.hide();
+        input.hide();
+    } else if (e.currentTarget.value == "mode") {
+        modeSelect.show();
+        textarea.hide();
+        typeSelect.hide();
+        input.hide();
+    } else if (e.currentTarget.value == "observation") {
+        textarea.show();
+        typeSelect.hide();
+        modeSelect.hide();
+        input.hide();
+    } else {
+        input.show();
+        textarea.hide();
+        typeSelect.hide();
+        modeSelect.hide();
+    }
 });

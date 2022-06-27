@@ -11,12 +11,25 @@ router.post('/addItem', isLoggedIn, async (req, res) => {
     req.body.sellPrice = req.body.sellPrice.slice(2);
 
     await item.addObservation(observation, req.user.id);
-    const obs = await item.getItemObservation(observation);
+    const obs = await item.getObservationByProp("observation", observation);
     const { id } = obs[0];
     req.body.observation = id;
 
     item.addItem(req.body);
 
+    res.redirect('/');
+});
+
+router.post('/modifyItem', isLoggedIn, async (req, res) => {
+    const { id } = req.body;
+    const { fieldToModify } = req.body;
+    const { modification } = req.body;
+    let finalModification = [];
+
+    // Find modification
+    modification.forEach(m => m != '' ? finalModification.push(m) : null);
+
+    await item.modifyItem(id, fieldToModify, finalModification);
     res.redirect('/');
 });
 

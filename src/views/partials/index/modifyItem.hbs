@@ -1,88 +1,34 @@
-<table class="table">
-    <thead>
-        {{> index/tableHead}}
-    </thead>
-    <tbody>
-        <tr>
-            <form action="/addItem" method="POST">
-                <td id="id-M"></td>
-                <td>
-                    <div class="form-group">
-                        <select name="type" id="type-M" class="form-select form-select-sm">
-                            {{#each types}}
-                                <option value="{{id}}">{{type}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" min="0" id="sideA-M" name="sideA" class="form-control form-control-sm p-1">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" min="0" id="sideB-M" name="sideB" class="form-control form-control-sm p-1">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" min="0" id="grammage-M" name="grammage" class="form-control form-control-sm p-1">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" min="0" id="sheets-M" name="sheets" class="form-control form-control-sm p-1">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <select name="mode" id="mode-M" class="form-select form-select-sm">
-                            {{#each modes}}
-                                <option value="{{id}}">{{mode}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" id="origin-M" name="origin" class="form-control form-control-sm p-1">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" min="0" id="weight-M" name="weight" class="form-control form-control-sm p-1">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" min="0" id="kgPurchasePrice-M" name="kgPurchasePrice" class="form-control form-control-sm p-1">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" min="0" id="kgSellPrice-M" name="kgSellPrice" class="form-control form-control-sm p-1">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" min="0" id="purchasePrice-M" name="purchasePrice" class="form-control form-control-sm p-1">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" min="0" id="sellPrice-M" name="sellPrice" class="form-control form-control-sm p-1">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <textarea name="observation" id="observation-M" class="form-control form-control-sm p-1 mb-2"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary btn-sm col-12">Agregar</button>
-                    </div>
-                </td>
-            </form>
-        </tr>
-    </tbody>
-</table>
+<div class="card p-0">
+    <div class="card-header">
+        <h6>Modificar elemento</h3>
+    </div>
+    <div class="card-body">
+        <form action="/modifyItem" method="post">
+            <div class="form-group mb-2">
+                <input type="number" min="{{items.0.id}}" class="form-control form-control-sm" placeholder="Id:" id="moditem-id" name="id">
+            </div>
+            <div class="form-group mb-2">
+                <select name="fieldToModify" id="modselect" class="form-select form-select-sm"></select>
+            </div>
+            <div class="form-group mb-2">
+                <input type="text" class="form-control form-control-sm" placeholder="Modificacion:" id="modinput" name="modification">
+                <textarea name="modification" id="modtextarea" class="form-control form-control-sm "></textarea>
+                <select name="modification" id="modtype" class="form-select form-select-sm">
+                    <option value=""></option>
+                    {{#each types}}
+                        <option value="{{id}}">{{type}}</option>
+                    {{/each}}
+                </select>
+                <select name="modification" id="modmode" class="form-select form-select-sm">
+                    <option value=""></option>
+                    {{#each modes}}
+                        <option value="{{id}}">{{mode}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-sm btn-success">Modificar</button>
+            </div>
+        </form>
+    </div>
+</div>

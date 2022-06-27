@@ -3,6 +3,9 @@
         {{> index/tableHead}}
     </thead>
     <tbody>
+        <tr>
+            {{> index/addItem}}
+        </tr>
         {{#each items}}
             <tr>
                 <td><button class="button-none idBtn" id="idBtn-{{id}}">{{id}}</button></td>
@@ -21,8 +24,5 @@
                 <td><textarea class="form-control" disabled>{{observation}}</textarea></td>
             </tr>
         {{/each}}
-        <tr>
-            {{> index/addItem}}
-        </tr>
     </tbody>
 </table>
