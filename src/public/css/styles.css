@@ -30,6 +30,10 @@ body{
     font-size: medium;
 }
 
+textarea.form-control{
+    font-size: small;
+}
+
 .button-none{
     background: none;
     color: inherit;

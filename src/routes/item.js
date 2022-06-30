@@ -20,21 +20,47 @@ router.post('/addItem', isLoggedIn, async (req, res) => {
     res.redirect('/');
 });
 
-router.post('/modifyItem', isLoggedIn, async (req, res) => {
+router.post('/updateItem', isLoggedIn, async (req, res) => {
     const { id } = req.body;
-    const { fieldToModify } = req.body;
+    const { field } = req.body;
     const { modification } = req.body;
     let finalModification = [];
 
     // Find modification
     modification.forEach(m => m != '' ? finalModification.push(m) : null);
 
-    await item.modifyItem(id, fieldToModify, finalModification);
+    await item.updateItemField(id, field, finalModification);
+    res.redirect('/');
+});
+
+router.post('/updateType', isLoggedIn, async (req, res) => {
+    const { field } = req.body;
+    const { modification } = req.body;
+
+    await item.updateType(field, modification);
+    res.redirect('/');
+});
+
+router.post('/updateMode', isLoggedIn, async (req, res) => {
+    const { field } = req.body;
+    const { modification } = req.body;
+
+    await item.updateMode(field, modification);
     res.redirect('/');
 });
 
 router.post('/deleteItem', isLoggedIn, async (req, res) => {
     await item.deleteItem(req.body.id);
+    res.redirect("/");
+});
+
+router.post('/deleteMode', isLoggedIn, async (req, res) => {
+    await item.deleteMode(req.body.id);
+    res.redirect("/");
+});
+
+router.post('/deleteType', isLoggedIn, async (req, res) => {
+    await item.deleteType(req.body.id);
     res.redirect("/");
 });
 

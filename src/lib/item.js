@@ -106,6 +106,7 @@ helpers.getObservationByProp = async (prop, search) => {
     }
 };
 
+
 // Insert functions
 helpers.addItem = async (data) => {
     try {
@@ -125,25 +126,93 @@ helpers.addObservation = async (observation, userId) => {
 
 
 // Update functions
-helpers.modifyItem = async (id, fieldToModify, modification) => {
+helpers.updateItemField = async (id, field, modification) => {
     let data = {};
-    data[fieldToModify] = modification;
+    data[field] = modification;
     try {
-        if (fieldToModify == "observation") {
-            const item = await helpers.getItemByProp("id", id);
-            await pool.query('UPDATE observations SET ? WHERE id = ?', [data, item[0].observation]);
+        if (field == "observation") {
+            await helpers.updateObservation(data, id);
         } else {
             await pool.query('UPDATE items SET ? WHERE id = ?', [data, id]);
+            if (field != "mode" && field != "origin" && field != "type") {
+                await helpers.calculateFields(id);
+            }
         }
     } catch (e) {
         console.log(e);
     }
-}
+};
+
+helpers.updateItem = async (id, data) => {
+    try {
+        await pool.query('UPDATE items SET ? WHERE id = ?', [data, id]);
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+helpers.updateObservation = async (data, id) => {
+    const item = await helpers.getItemByProp("id", id);
+    await pool.query('UPDATE observations SET ? WHERE id = ?', [data, item[0].observation]);
+};
+
+helpers.updateType = async (field, modification) => {
+    try {
+        if (field == "new") {
+            await pool.query('INSERT INTO types SET type = ?', [modification]);
+        } else {
+            await pool.query('UPDATE types SET type = ? WHERE id = ?', [modification, field])
+        }
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+helpers.updateMode = async (field, modification) => {
+    try {
+        if (field == "new") {
+            await pool.query('INSERT INTO modes SET mode = ?', [modification]);
+        } else {
+            await pool.query('UPDATE modes SET mode = ? WHERE id = ?', [modification, field])
+        }
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 // Delete functions
 helpers.deleteItem = async (id) => {
     try {
         await pool.query('DELETE FROM items WHERE ?', {id});
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+helpers.deleteMode = async (id) => {
+    try {
+        await pool.query('DELETE FROM modes WHERE ?', {id})
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+helpers.deleteType = async (id) => {
+    try {
+        await pool.query('DELETE FROM types WHERE ?', {id})
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+// Other functions
+helpers.calculateFields = async (id) => {
+    try {
+        let item = await helpers.getItemByProp("id", id);
+        item[0].weight = Math.round(item[0].sideA*item[0].sideB*item[0].grammage/20000/500*item[0].sheets);
+        item[0].purchasePrice = Math.round(item[0].weight*item[0].kgPurchasePrice);
+        item[0].sellPrice = Math.round(item[0].purchasePrice/item[0].kgPurchasePrice*item[0].kgSellPrice);
+        await helpers.updateItem(id, item[0]);
     } catch (e) {
         console.log(e);
     }

@@ -80,7 +80,6 @@ function calculateWeight(sideA, sideB, grammage, sheets) {
 }
 
 function calculatePurchasePrice(weight, kgPurchasePrice) {
-    console.log(kgPurchasePrice.val().slice(1), weight.val());
     return Math.round(weight.val()*kgPurchasePrice.val().slice(1));
 }
 
@@ -142,3 +141,35 @@ select.change(e => {
         modeSelect.hide();
     }
 });
+
+// #######################
+// Mode and type forms
+const updateMode = $("#updateMode");
+const deleteMode = $("#deleteMode");
+const modeButton = $("#modeButton");
+deleteMode.hide();
+
+modeButton.click(e => {
+    deleteMode.toggle(1000);  
+    updateMode.toggle(1000  );  
+});
+
+const updateType = $("#updateType");
+const deleteType = $("#deleteType");
+const typeButton = $("#typeButton");
+deleteType.hide();
+
+typeButton.click(e => {
+    deleteType.toggle(1000);  
+    updateType.toggle(1000  );  
+});
+
+// $(document).ready(function(){
+//     let printContent = document.getElementById('data-table');
+//     let WinPrint = window.open('', '', 'width=900,height=650');
+//     WinPrint.document.write(printContent.innerHTML);
+//     WinPrint.document.close();
+//     WinPrint.focus();
+//     WinPrint.print();
+//     WinPrint.close();
+// });

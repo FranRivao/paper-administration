@@ -8,7 +8,7 @@ router.get('/', isLoggedIn, async (req, res) => {
     const modes = await item.getItemModes();
     const observations = await item.getItemsObservations();
     const items = await item.getItems(types, modes, observations);
-
+    await item.calculateFields(4);
     res.render('index', {types, modes, items});
 });
 
