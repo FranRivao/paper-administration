@@ -6,9 +6,7 @@ const item = require('../lib/item');
 router.get('/', isLoggedIn, async (req, res) => {
     const types = await item.getItemTypes();
     const modes = await item.getItemModes();
-    const observations = await item.getItemsObservations();
-    const items = await item.getItems(types, modes, observations);
-    await item.calculateFields(4);
+    const items = await item.getItems(types, modes);
     res.render('index', {types, modes, items});
 });
 

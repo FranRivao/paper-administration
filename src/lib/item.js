@@ -2,7 +2,7 @@ const pool = require('../database');
 const helpers = {};
 
 // Select functions
-helpers.getItems = async (types, modes, observations) => {
+helpers.getItems = async (types, modes) => {
     try {
         const items = await pool.query('SELECT * FROM items');
 
@@ -18,14 +18,7 @@ helpers.getItems = async (types, modes, observations) => {
                     i.mode = m.mode;
                }
             });
-
-            observations.forEach(o => {
-                if (i.observation === o.id) {
-                    i.observation = o.observation;
-                }
-            });
-        });
-        return items;
+        }); return items;
     } catch (e) {
         console.log(e);
     }
@@ -74,7 +67,7 @@ helpers.getItemByProp = async (prop, search) => {
 
 helpers.getItemTypes = async () => {
     try {
-        return await pool.query('SELECT * FROM types')
+        return await pool.query('SELECT * FROM types');
     } catch (e) {
         console.log(e);
     }
@@ -83,24 +76,6 @@ helpers.getItemTypes = async () => {
 helpers.getItemModes = async () => {
     try {
         return await pool.query('SELECT * FROM modes');
-    } catch (e) {
-        console.log(e);
-    }
-};
-
-helpers.getItemsObservations = async () => {
-    try {
-        return await pool.query('SELECT * FROM observations');
-    } catch (e) {
-        console.log(e);
-    }
-};
-
-helpers.getObservationByProp = async (prop, search) => {
-    let data = {};
-    data[prop] = search;
-    try {
-        return await pool.query('SELECT * FROM observations WHERE ?', [data]);
     } catch (e) {
         console.log(e);
     }
@@ -116,27 +91,22 @@ helpers.addItem = async (data) => {
     }
 };
 
-helpers.addObservation = async (observation, userId) => {
+helpers.addOutlet = async (data) => {
     try {
-        await pool.query('INSERT INTO observations SET ?', {observation, userId})
+        await pool.query('INSERT INTO outlets SET ?', [data])
     } catch (e) {
         console.log(e);
-    }
+    }  
 };
-
 
 // Update functions
 helpers.updateItemField = async (id, field, modification) => {
     let data = {};
     data[field] = modification;
     try {
-        if (field == "observation") {
-            await helpers.updateObservation(data, id);
-        } else {
-            await pool.query('UPDATE items SET ? WHERE id = ?', [data, id]);
-            if (field != "mode" && field != "origin" && field != "type") {
-                await helpers.calculateFields(id);
-            }
+        await pool.query('UPDATE items SET ? WHERE id = ?', [data, id]);
+        if (field != "mode" && field != "origin" && field != "type") {
+            await helpers.calculateFields(id);
         }
     } catch (e) {
         console.log(e);
@@ -149,11 +119,6 @@ helpers.updateItem = async (id, data) => {
     } catch (e) {
         console.log(e);
     }
-};
-
-helpers.updateObservation = async (data, id) => {
-    const item = await helpers.getItemByProp("id", id);
-    await pool.query('UPDATE observations SET ? WHERE id = ?', [data, item[0].observation]);
 };
 
 helpers.updateType = async (field, modification) => {
@@ -188,7 +153,6 @@ helpers.deleteItem = async (id) => {
         console.log(e);
     }
 };
-
 helpers.deleteMode = async (id) => {
     try {
         await pool.query('DELETE FROM modes WHERE ?', {id})
@@ -213,6 +177,22 @@ helpers.calculateFields = async (id) => {
         item[0].purchasePrice = Math.round(item[0].weight*item[0].kgPurchasePrice);
         item[0].sellPrice = Math.round(item[0].purchasePrice/item[0].kgPurchasePrice*item[0].kgSellPrice);
         await helpers.updateItem(id, item[0]);
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+helpers.itemExists = async (data) => {
+    try {
+        const rows = await pool.query('SELECT * FROM items WHERE ? AND ? AND ? AND ? AND ? AND ?', [
+            {type: data.type}, 
+            {sideA: data.sideA}, 
+            {sideB: data.sideB}, 
+            {grammage: data.grammage}, 
+            {sheets: data.sheets}, 
+            {mode: data.mode}, 
+        ]);
+        return rows.length > 0 ? rows[0].id : null;
     } catch (e) {
         console.log(e);
     }

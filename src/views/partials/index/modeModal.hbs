@@ -1,0 +1,45 @@
+<button type="button" class="button-none me-2" data-bs-toggle="modal" data-bs-target="#modeModal">
+    Modo
+</button>
+<div class="modal fade" id="modeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="m-0 d-flex align-items-center">Modificar modo</h3>
+                <button type="button" class="btn btn-sm btn-primary" id="modeButton">Cambiar</button>
+            </div>
+            <div class="modal-body">
+                <form action="/updateMode" method="POST" id="updateMode">
+                    <div class="form-group mb-2">
+                        <select name="field" class="form-select form-select-sm">
+                            <option value="new">Agregar nuevo</option>
+                            {{#each modes}}
+                                <option value="{{id}}">{{mode}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group mb-2">
+                        <input type="text" class="form-control form-control-sm" placeholder="Modificacion:" name="modification">
+                    </div>
+                    <div class="form-group mb-2">
+                        <button class="btn btn-sm btn-success">Modificar</button>
+                    </div>
+                    <div class="form-group"></div>
+                </form>
+
+                <form action="/deleteMode" method="post" id="deleteMode">
+                    <div class="form-group mb-2">
+                        <select name="id" class="form-select form-select-sm">
+                            {{#each modes}}
+                                <option value="{{id}}">{{mode}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-sm btn-danger deleteTmButton">Eliminar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

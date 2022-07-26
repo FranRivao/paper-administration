@@ -36,14 +36,6 @@ INSERT INTO modes SET mode = "Paquete";
 INSERT INTO modes SET mode = "Palet";
 INSERT INTO modes SET mode = "Palet abierto";
 
--- Observations table
-CREATE TABLE observations(
-    id INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    observation VARCHAR(200) NOT NULL,
-    userId INT(11) NOT NULL,
-    CONSTRAINT fk_userId FOREIGN KEY (userId) REFERENCES users(id)
-);
-
 -- Items table
 CREATE TABLE items(
     id INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -59,9 +51,16 @@ CREATE TABLE items(
     kgSellPrice FLOAT(11) NOT NULL,
     purchasePrice FLOAT(11) NOT NULL,
     sellPrice FLOAT(11) NOT NULL,
-    observation INT(11) NOT NULL,
+    observation VARCHAR(200) NOT NULL,
     created_at timestamp DEFAULT current_timestamp,
     CONSTRAINT fk_type FOREIGN KEY (type) REFERENCES types(id),
-    CONSTRAINT fk_mode FOREIGN KEY (mode) REFERENCES modes(id),
-    CONSTRAINT fk_observation FOREIGN KEY (observation) REFERENCES observations(id)
+    CONSTRAINT fk_mode FOREIGN KEY (mode) REFERENCES modes(id)
+);
+
+CREATE TABLE outlets(
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    itemId INT(11) NOT NULL,
+    amount INT(11) NOT NULL,
+    observation VARCHAR(1000) NOT NULL,
+    CONSTRAINT fk_itemId FOREIGN KEY (itemId) REFERENCES items(id)
 );

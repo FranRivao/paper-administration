@@ -1,30 +1,22 @@
 <div class="col-12">
     <div class="card mb-3">
         <div class="card-header d-flex justify-content-between">
-            <h6 class="m-0"><b>Tabla stock de papel</b></h6>
+            <h6 class="m-0 d-flex align-items-center"><b>Tabla stock de papel</b></h6>
             <div class="d-flex justify-content-between">
-                <form action="/deleteItem" method="post" class="me-3 d-flex justify-content-between">
-                    <input type="number" min="{{items.0.id}}" placeholder="Id del elemento:" class="form-control form-control-sm" name="id">
+                <form action="/deleteItem" method="post" class="me-2 d-flex justify-content-between">
+                    <input type="number" min="{{items.0.id}}" placeholder="Id del papel:" class="form-control form-control-sm" name="id">
                     <button class="btn btn-sm btn-danger ms-2">Eliminar</button>
                 </form>
-                <a href="/stats" class="btn btn-sm btn-primary">Estadisticas</a>
+                {{> index/searchModal}}
+                <a href="/stats" class="btn btn-primary me-2">Estadisticas</a>
+                <button type="button" class="btn btn-secondary" id="print"><i class="fas fa-print"></i></button>
             </div>
         </div>
         <div class="card-body">
             {{> index/table}}
         </div>
     </div>
-    <div class="row" id="modify">
-        <div class="col-md-4">
-            {{> index/updateItem}}
-        </div>
-        <div class="col-md-4">
-            {{> index/updateType}}
-        </div>
-        <div class="col-md-4">
-            {{> index/updateMode}}
-        </div>
-    </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="static/js/index.js"></script>

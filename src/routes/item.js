@@ -1,35 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const { isLoggedIn } = require('../lib/auth');
+const { getItemByProp } = require('../lib/item');
 const item = require('../lib/item');
 
 router.post('/addItem', isLoggedIn, async (req, res) => {
-    const { observation } = req.body;
     req.body.kgPurchasePrice = req.body.kgPurchasePrice.slice(2);
     req.body.kgSellPrice = req.body.kgSellPrice.slice(2);
     req.body.purchasePrice = req.body.purchasePrice.slice(2);
     req.body.sellPrice = req.body.sellPrice.slice(2);
 
-    await item.addObservation(observation, req.user.id);
-    const obs = await item.getObservationByProp("observation", observation);
-    const { id } = obs[0];
-    req.body.observation = id;
-
-    item.addItem(req.body);
+    const exists = await item.itemExists(req.body);
+    if (exists == null) {
+        await item.addItem(req.body);
+    } else {
+        await item.updateItem(exists, req.body);
+    }
 
     res.redirect('/');
 });
 
-router.post('/updateItem', isLoggedIn, async (req, res) => {
-    const { id } = req.body;
-    const { field } = req.body;
-    const { modification } = req.body;
-    let finalModification = [];
+router.post('/outlets', isLoggedIn, async (req, res) => {
+    const data = {
+        itemId: req.body.id,
+        amount: req.body.modification,
+        observation: req.body.observation,
+    };
 
-    // Find modification
-    modification.forEach(m => m != '' ? finalModification.push(m) : null);
+    await item.addOutlet(data);
+    const i = await getItemByProp("id", req.body.id);
+    await item.updateItemField(req.body.id, "sheets", i[0].sheets - req.body.modification);
 
-    await item.updateItemField(id, field, finalModification);
     res.redirect('/');
 });
 

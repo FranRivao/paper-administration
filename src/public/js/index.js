@@ -144,32 +144,87 @@ select.change(e => {
 
 // #######################
 // Mode and type forms
-const updateMode = $("#updateMode");
-const deleteMode = $("#deleteMode");
+const updateModeForm = $("#updateMode");
+const deleteModeForm = $("#deleteMode");
 const modeButton = $("#modeButton");
-deleteMode.hide();
+deleteModeForm.hide();
 
-modeButton.click(e => {
-    deleteMode.toggle(1000);  
-    updateMode.toggle(1000  );  
+modeButton.click(() => {
+    deleteModeForm.toggle(1000);  
+    updateModeForm.toggle(1000);  
 });
 
-const updateType = $("#updateType");
-const deleteType = $("#deleteType");
+const updateTypeForm = $("#updateType");
+const deleteTypeForm = $("#deleteType");
 const typeButton = $("#typeButton");
-deleteType.hide();
+deleteTypeForm.hide();
 
-typeButton.click(e => {
-    deleteType.toggle(1000);  
-    updateType.toggle(1000  );  
+typeButton.click(() => {
+    deleteTypeForm.toggle(1000);  
+    updateTypeForm.toggle(1000);  
 });
 
-// $(document).ready(function(){
-//     let printContent = document.getElementById('data-table');
-//     let WinPrint = window.open('', '', 'width=900,height=650');
-//     WinPrint.document.write(printContent.innerHTML);
-//     WinPrint.document.close();
-//     WinPrint.focus();
-//     WinPrint.print();
-//     WinPrint.close();
-// });
+// #######################
+// Search form
+const searchButton = $("#plusBtn");
+const inputsDiv = $("#searchInputs");
+
+searchButton.click(e => {
+    inputsDiv.append(`
+    <div class="form-group mb-2">
+        <input type="text" class="form-control" name="prop" placeholder="Propiedad de la busqueda:">
+    </div>
+    `)
+});
+
+// #######################
+// Print function
+$("#print").click(function(){
+    $("#modeModal").empty();
+    $("#typeModal").empty();
+    $("#addItemTr").empty();
+    let printContent = document.getElementById('data-table');
+    let WinPrint = window.open('', '', 'width=900,height=650');
+    WinPrint.document.write(printContent.innerHTML);
+    WinPrint.document.close();
+    WinPrint.focus();
+    WinPrint.print();
+    WinPrint.close();
+});
+
+// #######################
+// Sweat alert
+const confirmDeleteWarning = Swal.mixin({
+    title: '<strong>Quieres eliminarlo?</strong>',
+    text: 'Esta accion es irreversible',
+    icon: 'warning',
+    showCancelButton: true,
+    focusConfirm: false,
+    allowOutsideClick: false,
+    allowEnterKey: false,
+    confirmButtonText:
+        '<i class="fa fa-trash"></i> Eliminar',
+    confirmButtonColor: '#009759',
+    cancelButtonText:
+    '<i class="fa fa-ban"></i> Cancelar',
+    cancelButtonColor: '#C22D00'
+});
+
+$(".deleteTmButton").click(event => {
+    event.preventDefault();
+    confirmDeleteWarning.fire().then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                toast: true,
+                icon: 'success',
+                title: 'Eliminado correctamente',
+                showConfirmButton: false,
+                position: 'bottom-right',
+                timer: 2000,
+                timerProgressBar: true,
+            });
+            deleteTypeForm.submit();
+            deleteModeForm.submit();
+        }
+    });
+});
