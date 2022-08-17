@@ -64,3 +64,11 @@ CREATE TABLE outlets(
     observation VARCHAR(1000) NOT NULL,
     CONSTRAINT fk_itemId FOREIGN KEY (itemId) REFERENCES items(id)
 );
+
+CREATE TABLE entrances(
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    itemId INT(11) NOT NULL,
+    amount INT(11) NOT NULL,
+    observation VARCHAR(1000) NOT NULL,
+    CONSTRAINT fk_item_id FOREIGN KEY (itemId) REFERENCES items(id)
+);

@@ -20,16 +20,22 @@ router.post('/addItem', isLoggedIn, async (req, res) => {
     res.redirect('/');
 });
 
-router.post('/outlets', isLoggedIn, async (req, res) => {
+router.post('/movements', isLoggedIn, async (req, res) => {
     const data = {
         itemId: req.body.id,
         amount: req.body.modification,
-        observation: req.body.observation,
+        observation: req.body.observation
     };
 
-    await item.addOutlet(data);
-    const i = await getItemByProp("id", req.body.id);
-    await item.updateItemField(req.body.id, "sheets", i[0].sheets - req.body.modification);
+    const i = await getItemByProp("id", data.itemId);
+
+    if (req.body.movement == "outlet") {
+        await item.addOutlet(data);
+        await item.updateItemField(data.itemId, "sheets", Number(i[0].sheets) - Number(data.amount));
+    } else {
+        await item.addEntrance(data);
+        await item.updateItemField(data.itemId, "sheets", Number(i[0].sheets) + Number(data.amount));
+    }
 
     res.redirect('/');
 });

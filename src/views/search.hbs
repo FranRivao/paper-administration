@@ -1,0 +1,35 @@
+<div class="col-12">
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+            <h6 class="m-0 d-flex align-items-center"><b>Resultados de la busqueda</b></h6>
+            <a href="/" class="btn btn-primary">Volver</a>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    {{> index/tableHead}}
+                </thead>
+                <tbody>
+                    {{#each results}}
+                        <tr>
+                            <td>{{id}}</td>
+                            <td>{{type}}</td>
+                            <td>{{sideA}} cm</td>
+                            <td>{{sideB}} cm</td>
+                            <td>{{grammage}}</td>
+                            <td>{{sheets}}</td>
+                            <td>{{mode}}</td>
+                            <td>{{origin}}</td>
+                            <td>{{weight}}</td>
+                            <td>€ {{kgPurchasePrice}}</td>
+                            <td>€ {{kgSellPrice}}</td>
+                            <td>€ {{purchasePrice}}</td>
+                            <td>€ {{sellPrice}}</td>
+                            <td><textarea class="form-control" disabled>{{observation}}</textarea></td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

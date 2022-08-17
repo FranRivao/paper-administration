@@ -1,0 +1,49 @@
+<div class="col-12">
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+            <h6 class="m-0 d-flex align-items-center"><b>Tabla entradas de papel</b></h6>
+            <a href="/" class="btn btn-primary">Volver</a>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <th>Item Id</th>
+                    <th>Cantidad que entra</th>
+                    <th>Observacion</th>
+                </thead>
+                <tbody>
+                    {{#each entrances}}
+                        <tr>
+                            <td>{{itemId}}</td>
+                            <td>{{amount}}</td>
+                            <td>{{observation}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+            <h6 class="m-0 d-flex align-items-center"><b>Tabla salidas de papel</b></h6>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <th>Item Id</th>
+                    <th>Cantidad que sale</th>
+                    <th>Observacion</th>
+                </thead>
+                <tbody>
+                    {{#each outlets}}
+                        <tr>
+                            <td>{{itemId}}</td>
+                            <td>{{amount}}</td>
+                            <td>{{observation}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

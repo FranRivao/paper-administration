@@ -5,8 +5,9 @@
             <div class="d-flex justify-content-between">
                 <form action="/deleteItem" method="post" class="me-2 d-flex justify-content-between">
                     <input type="number" min="{{items.0.id}}" placeholder="Id del papel:" class="form-control form-control-sm" name="id">
-                    <button class="btn btn-sm btn-danger ms-2">Eliminar</button>
+                    <button class="btn btn-danger ms-2">Eliminar</button>
                 </form>
+                {{> index/movementsModal}}
                 {{> index/searchModal}}
                 <a href="/stats" class="btn btn-primary me-2">Estadisticas</a>
                 <button type="button" class="btn btn-secondary" id="print"><i class="fas fa-print"></i></button>

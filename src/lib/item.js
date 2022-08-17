@@ -4,21 +4,8 @@ const helpers = {};
 // Select functions
 helpers.getItems = async (types, modes) => {
     try {
-        const items = await pool.query('SELECT * FROM items');
-
-        items.forEach(i => {
-            types.forEach(t => {
-               if (i.type === t.id) {
-                    i.type = t.type;
-               }
-            });
-
-            modes.forEach(m => {
-               if (i.mode === m.id) {
-                    i.mode = m.mode;
-               }
-            });
-        }); return items;
+        const items = await pool.query('SELECT * FROM items ORDER BY type, sideA, sideB');
+        return helpers.itemsFormat(items, types, modes);
     } catch (e) {
         console.log(e);
     }
@@ -81,6 +68,21 @@ helpers.getItemModes = async () => {
     }
 };
 
+helpers.getItemOutlets = async (id) => {
+    try {
+        return await pool.query('SELECT * FROM outlets WHERE itemId = ?', [id]);
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+helpers.getItemEntrances = async (id) => {
+    try {
+        return await pool.query('SELECT * FROM entrances WHERE itemId = ?', [id]);
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 // Insert functions
 helpers.addItem = async (data) => {
@@ -97,6 +99,14 @@ helpers.addOutlet = async (data) => {
     } catch (e) {
         console.log(e);
     }  
+};
+
+helpers.addEntrance = async (data) => {
+    try {
+        await pool.query('INSERT INTO entrances SET ?', [data]);
+    } catch (e) {
+        console.log(e);
+    }
 };
 
 // Update functions
@@ -148,18 +158,21 @@ helpers.updateMode = async (field, modification) => {
 // Delete functions
 helpers.deleteItem = async (id) => {
     try {
+        await helpers.deleteItemOutlets(id);
+        await helpers.deleteItemEntrances(id);
         await pool.query('DELETE FROM items WHERE ?', {id});
     } catch (e) {
         console.log(e);
     }
 };
+
 helpers.deleteMode = async (id) => {
     try {
         await pool.query('DELETE FROM modes WHERE ?', {id})
     } catch (e) {
         console.log(e);
     }
-}
+};
 
 helpers.deleteType = async (id) => {
     try {
@@ -167,7 +180,23 @@ helpers.deleteType = async (id) => {
     } catch (e) {
         console.log(e);
     }
-}
+};
+
+helpers.deleteItemEntrances = async (id) => {
+    try {
+        await pool.query('DELETE FROM entrances WHERE itemId = ?', [id]);
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+helpers.deleteItemOutlets = async (id) => {
+    try {
+        await pool.query('DELETE FROM outlets WHERE itemId = ?', [id]);
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 // Other functions
 helpers.calculateFields = async (id) => {
@@ -196,6 +225,39 @@ helpers.itemExists = async (data) => {
     } catch (e) {
         console.log(e);
     }
+};
+
+helpers.searchItem = async (search) => {
+    search = `%${search}%`;
+
+    try {
+        return await pool.query(`SELECT * FROM items WHERE sideA LIKE ? OR sideB LIKE ? OR grammage LIKE ? OR origin LIKE ?`, [search, search, search, search]);
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+helpers.itemsFormat = async (items, types = false, modes = false) => {
+    if (types == false && modes == false) {
+        types = await helpers.getItemTypes();
+        modes = await helpers.getItemModes();
+    }
+
+    items.forEach(i => {
+        types.forEach(t => {
+           if (i.type === t.id) {
+                i.type = t.type;
+           }
+        });
+
+        modes.forEach(m => {
+           if (i.mode === m.id) {
+                i.mode = m.mode;
+           }
+        });
+    }); 
+
+    return items;
 };
 
 module.exports = helpers;

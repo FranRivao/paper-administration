@@ -143,7 +143,7 @@ select.change(e => {
 });
 
 // #######################
-// Mode and type forms
+// Mode/type/outlet forms
 const updateModeForm = $("#updateMode");
 const deleteModeForm = $("#deleteMode");
 const modeButton = $("#modeButton");
@@ -164,12 +164,22 @@ typeButton.click(() => {
     updateTypeForm.toggle(1000);  
 });
 
+const outletInsertForm = $("#insertMovement");
+const searchMovementsForm = $("#searchMovements");
+const movementButton = $("#movementButton");
+searchMovementsForm.hide();
+
+movementButton.click(() => {
+    outletInsertForm.toggle(1000);  
+    searchMovementsForm.toggle(1000);  
+});
+
 // #######################
 // Search form
 const searchButton = $("#plusBtn");
 const inputsDiv = $("#searchInputs");
 
-searchButton.click(e => {
+searchButton.click(() => {
     inputsDiv.append(`
     <div class="form-group mb-2">
         <input type="text" class="form-control" name="prop" placeholder="Propiedad de la busqueda:">
@@ -210,21 +220,20 @@ const confirmDeleteWarning = Swal.mixin({
     cancelButtonColor: '#C22D00'
 });
 
-$(".deleteTmButton").click(event => {
-    event.preventDefault();
-    confirmDeleteWarning.fire().then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                toast: true,
-                icon: 'success',
-                title: 'Eliminado correctamente',
-                showConfirmButton: false,
-                position: 'bottom-right',
-                timer: 2000,
-                timerProgressBar: true,
-            });
-            deleteTypeForm.submit();
+$("#deleteModeBtn").click(e => {
+    e.preventDefault();
+    confirmDeleteWarning.fire().then((r) => {
+        if (r.isConfirmed) {
             deleteModeForm.submit();
+        }
+    });
+});
+
+$("#deleteTypeBtn").click(e => {
+    e.preventDefault();
+    confirmDeleteWarning.fire().then((r) => {
+        if (r.isConfirmed) {
+            deleteTypeForm.submit();
         }
     });
 });
