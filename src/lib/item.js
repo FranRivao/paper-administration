@@ -11,6 +11,15 @@ helpers.getItems = async (types, modes) => {
     }
 };
 
+helpers.getItemsLimited = async (types, modes, perPage, page) => {
+    try {
+        const items = await pool.query('SELECT * FROM items ORDER BY type, sideA, sideB LIMIT ?, ?', [perPage * page, perPage]);
+        return helpers.itemsFormat(items, types, modes);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 helpers.getItemsForStats = async () => {
     try {
         const package = await pool.query('SELECT COUNT(*) as count FROM items WHERE mode = 1');

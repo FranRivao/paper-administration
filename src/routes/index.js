@@ -4,11 +4,15 @@ const { isLoggedIn } = require('../lib/auth');
 const helpers = require('../lib/item');
 const item = require('../lib/item');
 
-router.get('/', isLoggedIn, async (req, res) => {
+router.get('/:page?', isLoggedIn, async (req, res) => {
+    const perPage = 5;
+    const page = req.params.page || 0;
+
     const types = await item.getItemTypes();
     const modes = await item.getItemModes();
-    const items = await item.getItems(types, modes);
-    res.render('index', {types, modes, items});
+    const items = await item.getItemsLimited(types, modes, perPage, page);
+    
+    res.render('index', {types, modes, items, nextPage: page+1, previousPage: page-1});
 });
 
 router.get('/stats', isLoggedIn, async (req, res) => {
